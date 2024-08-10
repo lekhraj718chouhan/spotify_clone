@@ -59,16 +59,18 @@ async function getSongs(folder) {
 }
 
 const playMusic = (track, pause = false) => {
-    currentSong.src = `/${currFolder}/` + track
-    if (!pause) {
-        currentSong.play()
-        play.src = "img/pause.svg/pause.svg"
-    }
-    document.querySelector(".songinfo").innerHTML = decodeURI(track)
-    document.querySelector(".songtime").innerHTML = "00:00 / 00:00"
-
-
-}
+    currentSong.src = `/${currFolder}/` + track;
+  
+    const handleCanPlayThrough = () => {
+      currentSong.play();
+      play.src = "img/pause.svg/pause.svg";
+      document.querySelector(".songinfo").innerHTML = decodeURI(track);
+      document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
+      currentSong.removeEventListener('canplaythrough', handleCanPlayThrough);
+    };
+  
+    currentSong.addEventListener('canplaythrough', handleCanPlayThrough);
+  };
 
 async function displayAlbums() {
     console.log("displaying albums")
